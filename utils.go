@@ -13,18 +13,18 @@ import (
 	"sort"
 )
 
-func IdsFitter(ids []int) []int {
+// IdsUniqueFitter ids去重
+func IdsUniqueFitter(ids []int) []int {
 	sort.Ints(ids)
 	var newIds []int
 	var lastId int
-	if len(ids) > 0 {
-		lastId = ids[0]
-		newIds = append(newIds, ids[0])
-	}
-	for k, v := range ids {
-		if k > 0 && v != lastId {
-			lastId = v
-			newIds = append(newIds, v)
+	for i, id := range ids {
+		if i == 0 {
+			lastId = id
+			newIds = append(newIds, id)
+		} else if id != lastId {
+			lastId = id
+			newIds = append(newIds, id)
 		}
 	}
 	return newIds
