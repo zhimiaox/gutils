@@ -29,7 +29,7 @@ func MD5(value string) string {
 	return hex.EncodeToString(m.Sum(nil))
 }
 
-//ParseToken 解析jwtToken
+// ParseToken 解析jwtToken
 func ParseToken(tokenString string) (string, error) {
 	jwtSecret := []byte(common.Config.App.JwtSecret)
 	tokenClaims, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
@@ -50,7 +50,7 @@ func ParseToken(tokenString string) (string, error) {
 	return "", err
 }
 
-//CreateToken 生成jwtToken
+// CreateToken 生成jwtToken
 func CreateToken(subject string, expire time.Duration) (string, error) {
 	jwtSecret := []byte(common.Config.App.JwtSecret)
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
@@ -82,7 +82,7 @@ func PasswordVerify(hashedPwd string, plainPwd string) bool {
 }
 
 // EncyptogAES
-//---------------DES加密  解密--------------------
+// ---------------DES加密  解密--------------------
 func EncyptogAES(src, key string) string {
 	s := []byte(src)
 	k := []byte(key)
@@ -93,7 +93,7 @@ func EncyptogAES(src, key string) string {
 	}
 	blockSize := block.BlockSize()
 	paddingCount := blockSize - len(s)%blockSize
-	//填充数据为：paddingCount ,填充的值为：paddingCount
+	// 填充数据为：paddingCount ,填充的值为：paddingCount
 	paddingStr := bytes.Repeat([]byte{byte(paddingCount)}, paddingCount)
 	new_s := append(s, paddingStr...)
 	blockMode := cipher.NewCBCEncrypter(block, []byte(key))
