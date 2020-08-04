@@ -1,4 +1,4 @@
-module github.com/zhi-miao/go-utils
+module github.com/zhi-miao/gutils
 
 go 1.14
 

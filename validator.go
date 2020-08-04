@@ -5,7 +5,7 @@
  * Date: 2020/3/3 下午4:26
  */
 
-package utils
+package gutils
 
 // Validator 参数校验错误信息优化
 func Validator(err error) string {
