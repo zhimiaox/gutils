@@ -18,7 +18,6 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/sirupsen/logrus"
-	"github.com/zhi-miao/wechat/common"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -30,10 +29,9 @@ func MD5(value string) string {
 }
 
 // ParseToken 解析jwtToken
-func ParseToken(tokenString string) (string, error) {
-	jwtSecret := []byte(common.Config.App.JwtSecret)
+func ParseToken(tokenString string, secret []byte) (string, error) {
 	tokenClaims, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return jwtSecret, nil
+		return secret, nil
 	})
 
 	if tokenClaims != nil {
@@ -41,7 +39,7 @@ func ParseToken(tokenString string) (string, error) {
 			if !claims.VerifyExpiresAt(time.Now().Unix(), false) {
 				return "", fmt.Errorf("过期了")
 			}
-			if claims.Issuer != "zhimiao-wechat" {
+			if claims.Issuer != "zhimiao" {
 				return "", fmt.Errorf("非法来源的签名")
 			}
 			return claims.Subject, nil
@@ -51,14 +49,13 @@ func ParseToken(tokenString string) (string, error) {
 }
 
 // CreateToken 生成jwtToken
-func CreateToken(subject string, expire time.Duration) (string, error) {
-	jwtSecret := []byte(common.Config.App.JwtSecret)
+func CreateToken(subject string, expire time.Duration, secret []byte) (string, error) {
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
 		Subject:   subject,
 		ExpiresAt: time.Now().Add(expire).Unix(),
-		Issuer:    "zhimiao-wechat",
+		Issuer:    "zhimiao",
 	})
-	token, err := tokenClaims.SignedString(jwtSecret)
+	token, err := tokenClaims.SignedString(secret)
 	return token, err
 }
 
