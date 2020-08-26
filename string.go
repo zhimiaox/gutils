@@ -3,12 +3,28 @@ package gutils
 import (
 	"fmt"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 	"unicode/utf8"
 
 	"github.com/axgle/mahonia"
 )
+
+// MsgTplCompile 字符串模板渲染
+// "您的验证码{0}，过期时间{1}分钟", ["123", "5"] => 您的验证码123，过期时间5分钟
+func MsgTplCompile(tpl string, args []string) string {
+	re, _ := regexp.Compile(`\{\d\}`)
+	maxI := len(args)
+	for _, indexStr := range re.FindAll([]byte(tpl), -1) {
+		i, err := strconv.Atoi(string(indexStr[1 : len(indexStr)-1]))
+		if err != nil || i < 0 || i >= maxI {
+			continue
+		}
+		tpl = strings.ReplaceAll(tpl, string(indexStr), args[i])
+	}
+	return tpl
+}
 
 // MustUtf8 强制字符串必须为utf8
 func MustUtf8(s string) string {

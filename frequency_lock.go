@@ -4,6 +4,7 @@
  * Author: 倒霉狐狸 <mail@xiaoliu.org>
  * Date: 2020/3/3 下午4:26
  */
+
 package gutils
 
 import (
@@ -24,13 +25,15 @@ type lockTable struct {
 	Items            map[string]lockItem // 子集
 }
 
+// NewLockTable 新建
 func NewLockTable() *lockTable {
 	return &lockTable{
 		Items: make(map[string]lockItem),
 	}
 }
 
-func (l *lockTable) IsLock(key string, lock_time time.Duration) bool {
+// IsLock 是否锁
+func (l *lockTable) IsLock(key string, lockTime time.Duration) bool {
 	l.Lock()
 	if item, ok := l.Items[key]; ok {
 		l.Unlock()
@@ -42,7 +45,7 @@ func (l *lockTable) IsLock(key string, lock_time time.Duration) bool {
 	}
 	l.Items[key] = lockItem{
 		Key:      key,
-		LifeSpan: lock_time,
+		LifeSpan: lockTime,
 		CreateOn: time.Now(),
 	}
 	cleannerDuraction := l.CleanerDuraction

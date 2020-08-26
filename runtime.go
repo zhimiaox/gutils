@@ -10,25 +10,7 @@ package gutils
 import (
 	"fmt"
 	"runtime"
-	"sort"
 )
-
-// IdsUniqueFitter ids去重
-func IdsUniqueFitter(ids []int) []int {
-	sort.Ints(ids)
-	var newIds []int
-	var lastId int
-	for i, id := range ids {
-		if i == 0 {
-			lastId = id
-			newIds = append(newIds, id)
-		} else if id != lastId {
-			lastId = id
-			newIds = append(newIds, id)
-		}
-	}
-	return newIds
-}
 
 // PanicToError Panic转换为error
 func PanicToError(f func()) (err error) {
