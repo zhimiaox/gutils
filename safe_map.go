@@ -41,7 +41,7 @@ func (st *SafeStringMap) SET(key string, value string) {
 func (st *SafeStringMap) SETNX(key string, value string) (ok bool) {
 	ok = false
 	st.Lock()
-	if _, ok := st.Map[key]; !ok {
+	if _, ok = st.Map[key]; !ok {
 		st.Map[key] = value
 		ok = true
 	}

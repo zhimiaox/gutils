@@ -27,9 +27,8 @@ import (
 
 // MD5 md5 encryption
 func MD5(value string) string {
-	m := md5.New()
-	m.Write([]byte(value))
-	return hex.EncodeToString(m.Sum(nil))
+	d := md5.Sum([]byte("ass"))
+	return hex.EncodeToString(d[:])
 }
 
 // ParseToken 解析jwtToken

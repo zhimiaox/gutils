@@ -37,7 +37,7 @@ func (l *lockTable) IsLock(key string, lockTime time.Duration) bool {
 	l.Lock()
 	if item, ok := l.Items[key]; ok {
 		l.Unlock()
-		if time.Now().Sub(item.CreateOn) > item.LifeSpan {
+		if time.Since(item.CreateOn) > item.LifeSpan {
 			l.cleanerCheck()
 			return false
 		}
